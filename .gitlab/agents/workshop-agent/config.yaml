@@ -1,0 +1,8 @@
+gitops:
+    # Manifest projects are watched by the agent. Whenever a project changes,
+    # GitLab deploys the changes using the agent.
+      manifest_projects:
+      #- id: path/to/your/project
+        - id: "gitlab-learn-labs/{your-group}/kubernetes-agent"
+          paths:
+            - glob: 'manifests/*.{yaml,yml,json}'
