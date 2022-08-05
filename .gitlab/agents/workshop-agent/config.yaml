@@ -1,8 +1,17 @@
 gitops:
-    # Manifest projects are watched by the agent. Whenever a project changes,
-    # GitLab deploys the changes using the agent.
+      # Manifest projects are watched by the agent. Whenever a project changes,
+      # GitLab deploys the changes using the agent.
       manifest_projects:
+      - id: gitlab-learn-labs/{path-to-your-group-and-project}
       #- id: path/to/your/project
-        - id: "gitlab-learn-labs/{your-group}/kubernetes-agent"
-          paths:
-            - glob: 'manifests/*.{yaml,yml,json}'
+        paths:
+        - glob: 'manifests/*.yaml'
+
+
+# The CI/CD tunnel is always enabled in the project where you register and configure the Agent.
+# This connection can be shared with other groups and projects.
+ci_access:
+  groups:
+  - id: gitlab-learn-labs/{path-to-your-group}
+
+
