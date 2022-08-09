@@ -1,9 +1,0 @@
-Flask
-flask_wtf
-wtforms
-flask-bootstrap
-pysqlite3
-mariadb==1.0.11
-Werkzeug
-flask_httpauth
-django==2.0.0
