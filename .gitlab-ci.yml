@@ -35,10 +35,11 @@ build:
     - docker push $IMAGE
 
 unit:
-  image: python:3
+  image: python:3.6
   stage: unit
   script:
     - apt update -y
     - apt install libmariadb3 libmariadb-dev sqlite3 libsqlite3-dev -y
+    - pip install --upgrade pip
     - pip3 install -r requirements.txt
     - python -m unittest tests/test_db.py
