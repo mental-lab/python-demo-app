@@ -2,7 +2,7 @@ gitops:
       # Manifest projects are watched by the agent. Whenever a project changes,
       # GitLab deploys the changes using the agent.
       manifest_projects:
-      - id: $CI_PROJECT_PATH
+      - id: gitlab-learn-labs/{path-to-your-group-and-project}
       #- id: path/to/your/project
         paths:
         - glob: 'manifests/*.yaml'
@@ -12,6 +12,6 @@ gitops:
 # This connection can be shared with other groups and projects.
 ci_access:
   groups:
-  - id: $CI_PROJECT_NAMESPACE
+  - id: gitlab-learn-labs/{path-to-your-group}
 
 
