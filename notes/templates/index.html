@@ -1,12 +1,12 @@
 {% extends 'bootstrap/base.html' %}
 <html>
    
-    {% block title %}Simply Simple Notes{% endblock %}
+    {% block title %}Tankui Racing Leaderboard{% endblock %}
     
     {% block content %}
     <body>
         <center>
-            <h1>Simply Simple Notes</h1>
+            <h1>Tankui Racing Leaderboard</h1>
             
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -20,7 +20,7 @@
 
             <hr>
 
-            <h3><b>My notes</b></h3>
+            <h3><b>Top Racers</b></h3>
 
             {% for note in notes %}
             <div><p><b>{{ note }}</b></p></div>
@@ -28,7 +28,7 @@
 
             <hr>
             
-            <h3>Add a new note</h3>
+            <h3>Add a new entry</h3>
             <form class="form-inline" action="" method="post" novalidate>
                 {{ add_form.hidden_tag() }}
                 <p>
@@ -39,16 +39,6 @@
             </form>
 
             <hr>
-
-            <h3>Delete an old note</h3>
-            <form class="form-inline" action="" method="post" novalidate>
-                {{ delete_form.hidden_tag() }}
-                <p>
-                    {{ delete_form.id_field.label }}
-                    {{ delete_form.id_field(size=2) }}
-                    {{ delete_form.delete() }}
-                </p>
-            </form>
 
             <hr>
 

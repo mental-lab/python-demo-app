@@ -1,5 +1,5 @@
 import os
-
+from random import randrange
 from notes import db, note, auth, users
 from notes.forms import AddForm, AdminForm, ResetForm, DeleteForm
 from flask import render_template, request, flash, redirect, jsonify
@@ -24,7 +24,7 @@ def index():
         for item in items:
             try:
                 _id = item[0]
-                _note = item[1]
+                _note = randrange(60)
                 note_str = '%s. "%s"' % (_id, _note)
                 arr.append(note_str)
             except Exception as e:
