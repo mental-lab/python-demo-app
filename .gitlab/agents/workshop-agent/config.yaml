@@ -2,7 +2,8 @@ gitops:
       # Manifest projects are watched by the agent. Whenever a project changes,
       # GitLab deploys the changes using the agent.
       manifest_projects:
-      - id: gitlab-learn-labs/{path-to-your-group-and-project}
+      # Below variable is just a place holder. Most workshop do not need to have the manifest_project set
+      - id: $CI_PROJECT_PATH
       #- id: path/to/your/project
         paths:
         - glob: 'manifests/*.yaml'
