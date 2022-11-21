@@ -8,6 +8,8 @@
         <center>
             <h1>Tankui Racing Leaderboard</h1>
             
+            <img src="{{url_for('static', filename='racer.png')}}" />
+
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul>
