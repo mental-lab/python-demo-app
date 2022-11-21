@@ -6,4 +6,3 @@ pysqlite3
 mariadb==1.0.11
 Werkzeug
 flask_httpauth
-randrange
