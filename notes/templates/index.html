@@ -24,14 +24,6 @@
 
             <h3><b>Top Racers</b></h3>
 
-            <row>
-                <col>
-                Name
-                </col>
-                <col>
-                Time
-                </col>
-            </row>
             {% for note in notes %}
             <row>
                 <col>
@@ -41,6 +33,7 @@
                 {{note.time}}
                 </col>
             </row>
+            |
             {% endfor %}
 
         </center>
