@@ -21,49 +21,49 @@ def index():
 
     arr = [
         {
-          Name: 'Shoe', id: '1', time: '1:35'
+          'name': 'Shoe', id: '1', 'time': '1:35'
         },
         {
-          Name: 'Thorn', id: '2', time: '1:36'
+          'name': 'Thorn', id: '2', 'time': '1:36'
         },
         {
-          Name: 'BrightCow', id: '3', time: '1:39'
+          'name': 'BrightCow', id: '3', 'time': '1:39'
         },
         {
-          Name: 'FireFlower', id: '4', time: '1:41'
+          'name': 'FireFlower', id: '4', 'time': '1:41'
         },
         {
-          Name: 'RTZ', id: '5', time: '1:47'
+          'name': 'RTZ', id: '5', 'time': '1:47'
         },
         {
-          Name: 'Krit', id: '6', time: '1:50'
+          'name': 'Krit', id: '6', 'time': '1:50'
         },
         {
-          Name: 'DuBu', id: '7', time: '2:11'
+          'name': 'DuBu', id: '7', 'time': '2:11'
         },
         {
-          Name: 'DinnerZoltar', id: '8', time: '2:12'
+          'name': 'DinnerZoltar', id: '8', 'time': '2:12'
         },
         {
-          Name: 'DM', id: '9', time: '2:22'
+          'name': 'DM', id: '9', 'time': '2:22'
         },
         {
-          Name: 'Zoo', id: '10', time: '2:30'
+          'name': 'Zoo', id: '10', 'time': '2:30'
         },
         {
-          Name: 'Nova', id: '11', time: '2:57'
+          'name': 'Nova', id: '11', 'time': '2:57'
         },
         {
-          Name: 'Light', id: '12', time: '3:07'
+          'name': 'Light', id: '12', 'time': '3:07'
         },
         {
-          Name: 'Beam', id: '13', time: '3:08'
+          'name': 'Beam', id: '13', 'time': '3:08'
         },
         {
-          Name: 'Solo', id: '14', time: '3:22'
+          'name': 'Solo', id: '14', 'time': '3:22'
         },
         {
-          Name: 'Ghost', id: '15', time: '3:50'
+          'name': 'Ghost', id: '15', 'time': '3:50'
         }
       ]
 
