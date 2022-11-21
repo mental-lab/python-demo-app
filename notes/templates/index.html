@@ -22,35 +22,24 @@
 
             <h3><b>Top Racers</b></h3>
 
+            <row>
+                <col>
+                Name
+                </col>
+                <col>
+                Time
+                </col>
+            </row>
             {% for note in notes %}
-            <div><p><b>{{ note }}</b></p></div>
+            <row>
+                <col>
+                {{note.Name}}
+                </col>
+                <col>
+                {{note.time}}
+                </col>
+            </row>
             {% endfor %}
-
-            <hr>
-            
-            <h3>Add a new entry</h3>
-            <form class="form-inline" action="" method="post" novalidate>
-                {{ add_form.hidden_tag() }}
-                <p>
-                    {{ add_form.note_field.label }}
-                    {{ add_form.note_field(size=32) }}
-                    {{ add_form.add() }}
-                </p>
-            </form>
-
-            <hr>
-
-            <hr>
-
-            <h3>Admin?</h3>
-            <form class="form-inline" action="" method="post" novalidate>
-                {{ admin_form.hidden_tag() }}
-                <p>
-                    {{ admin_form.login() }}
-                </p>
-            </form>
-
-            <hr>
 
         </center>
     </body>
