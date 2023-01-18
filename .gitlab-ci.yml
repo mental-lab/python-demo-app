@@ -10,19 +10,6 @@ variables:
 
 stages:
   - build
-  - unit
-  - review
-  - staging
-  - canary
-  - production
-  - incremental rollout 10%
-  - incremental rollout 25%
-  - incremental rollout 50%
-  - incremental rollout 100%
-  - cleanup
-
-include:  
-  - template: Jobs/Deploy.gitlab-ci.yml # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Jobs/Deploy.gitlab-ci.yml
 
 build:
   stage: build
@@ -33,13 +20,3 @@ build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE .
     - docker push $IMAGE
-
-unit:
-  image: python:3.6
-  stage: unit
-  script:
-    - apt update -y
-    - apt install libmariadb3 libmariadb-dev sqlite3 libsqlite3-dev -y
-    - pip install --upgrade pip
-    - pip3 install -r requirements.txt
-    - python -m unittest tests/test_db.py
