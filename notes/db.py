@@ -1,32 +1,16 @@
 import os
-import mariadb
+import logging
 import sqlite3
-from notes import note, db_backend
+from sqlite3 import Error
 
 
-def create_connection(name='my_database'):
+def create_connection(name='notes.db'):
     conn = None
 
-    if db_backend == 'mariadb':
-        try:
-            conn = mariadb.connect(
-                user="root",
-                password=os.environ.get("DB_ROOT_PWD"),
-                host="mariadb",
-                port=3306,
-                database=name
-            )
-            conn.auto_reconnect = True
-        except Exception as e:
-            note.logger.error("Error: cannot connect to db - %s" % e)
-            return
-
-    elif db_backend == 'local':
-        try:
-            conn = sqlite3.connect(name + ".db")
-        except Exception as e:
-            note.logger.error("Error: cannot connect to db - %s" % e)
-            return
+    try:
+        conn = sqlite3.connect(name)
+    except Error as e:
+        logging.error(e)
 
     return conn
 
@@ -35,63 +19,37 @@ def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
-    except Exception as e:
-        note.logger.error("Error: cannot create table - %s" % e)
+    except Error as e:
+        print(e)
 
-    conn.close()
-
-def drop_table(conn, drop_table_sql):
-    try:
-        c = conn.cursor()
-        c.execute(drop_table_sql)
-    except Exception as e:
-        note.logger.error("Error: cannot drop table - %s" % e)
-
-    conn.close()
 
 def create_note(conn, notes):
-    query = "INSERT  INTO notes(data) VALUES(?)"
-    cur = conn.cursor()
+    query = "INSERT INTO notes(data) VALUES(?)"
 
-    try:
-        note.logger.info("Adding Note %s", notes)
-        cur.execute(query, notes)
-    except Exception as e:
-        note.logger.error("Error: cannot create note - %s" % e)
+    c = conn.cursor()
+    c.execute(query, notes)
+    c.commit()
 
-    lastRowId = cur.lastrowid
-    conn.commit()
-    conn.close()
-
-    return lastRowId
+    return c.lastrowid
 
 
 def delete_note(conn, id):
     query = 'DELETE FROM notes WHERE id=?'
-    cur = conn.cursor()
-
-    try:
-        note.logger.info("Deleteing Note #%s", id)
-        cur.execute(query, (id,))
-    except Exception as e:
-        note.logger.error("Error: cannot delete note - %s" % e)
-
+    
+    c = conn.cursor()
+    c.execute(query, (id,))
+    c.commit()
+    
     conn.commit()
-    conn.close()
 
 def select_note_by_id(conn, id=None):
     query = "SELECT * FROM notes"
-    cur = conn.cursor()
 
     if id:
         query = query + " WHERE id = '%s'" % id
 
-    try:
-        note.logger.info("Getting all notes!")
-        cur.execute(query)
-    except Exception as e:
-        note.logger.error("Error: cannot select note by id - %s" % e)
+    cur = conn.cursor()
+    cur.execute(query)
 
-    allItems = cur.fetchall()
-    conn.close()
-    return allItems
+    rows = cur.fetchall()
+    return rows

@@ -125,7 +125,6 @@ dmypy.json
 .pyre/
 
 # other
-my_database.db
-test_database.db
+notes.db
 .DS_Store
 .vscode

@@ -1,17 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 
 class AddForm(FlaskForm):
-    note_field = StringField('Enter Note', validators=[DataRequired()])
+    note_field = StringField('Add New Note', validators=[DataRequired()])
     add = SubmitField('Add')
 
 class DeleteForm(FlaskForm):
-    id_field = StringField('Enter Id', validators=[DataRequired()])
+    id_field = StringField('Delete Note by ID', validators=[DataRequired()])
     delete = SubmitField('Delete')
-
-class AdminForm(FlaskForm):
-    login = SubmitField('Login')
-
-class ResetForm(FlaskForm):
-    reset = SubmitField('Reset Database Table')
