@@ -1,7 +1,7 @@
-image: docker:latest
+# image: docker:latest
 
-services:
-  - docker:dind
+# services:
+#   - docker:dind
 
 variables:
   DOCKER_DRIVER: overlay2
