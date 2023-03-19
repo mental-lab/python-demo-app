@@ -1,0 +1,8 @@
+name: notes
+version: 1.0.0
+appVersion: 1.0.0
+apiVersion: v2
+home: https://gitlab.com/tech-marketing/devsecops/initech/simple-notes
+description: A simple Flask application that stores notes in a database or file.
+sources:
+  - https://gitlab.com/tech-marketing/devsecops/initech/simple-notes

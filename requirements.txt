@@ -2,4 +2,7 @@ Flask
 flask_wtf
 wtforms
 flask-bootstrap
+mariadb
 pysqlite3
+Werkzeug
+flask_httpauth

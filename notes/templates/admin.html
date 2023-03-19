@@ -1,5 +1,5 @@
 {% extends 'bootstrap/base.html' %}
-{% block title %}Simple Notes - Basic Mode{% endblock %}
+{% block title %}Simple Notes - Admin Mode{% endblock %}
 
 <html>
     {% block content %}
@@ -45,14 +45,14 @@
 
     <body>
         <center>
-            <h1>Simple Notes - Basic Mode</h1>
+            <h1>Simple Notes - Admin Mode</h1>
 
             <p>
-                Your access is basic, no secrets or nada. Don't throw bricks (🧱)
+                You are now in control. Feel the power 🔋.
             </p>
 
             <hr>
-            
+
             <div class="messages">
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -71,7 +71,7 @@
                 <p>
                     <b>key</b>
                     <br>
-                    | id | note |
+                    | id | note | ipaddress | hostname | *secret |
                 </p>
             </div>
 
@@ -82,7 +82,7 @@
 
             <hr>
             
-            <h3>Add a new note</h3>
+            <h3>Add a secret note</h3>
             <form class="form-inline" action="" method="post" novalidate>
                 {{ add_form.hidden_tag() }}
                 <p>
@@ -106,22 +106,20 @@
 
             <hr>
 
-            <h3>You an 'Admin' Bro?</h3>
+            <h3>Reset Database Table</h3>
             <form class="form-inline" action="" method="post" novalidate>
-                {{ admin_form.hidden_tag() }}
+                {{ reset_form.hidden_tag() }}
                 <p>
-                    {{ admin_form.login() }}
+                    {{ reset_form.reset() }}
                 </p>
             </form>
-
-            <hr>
-
         </center>
     </body>
-    
+
     <footer>
         <p>Created by GitLab's <a href="https://about.gitlab.com/handbook/marketing/strategic-marketing/technical-marketing/#which-technical-marketing-manager">Technical Marketing Team</a></p>
         <p><a href="https://gitlab.com/tech-marketing/devsecops/initech/simple-notes">Source Code</a></p>
     </footer>
     {% endblock %}
+
 </html>

@@ -3,13 +3,23 @@ image: docker:latest
 services:
   - docker:dind
 
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
-  ROLLOUT_RESOURCE_TYPE: deployment
-
 stages:
   - build
+  - unit
+  - test
+  - feature
+  - staging
+  - cleanup
+  - production
+
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.gitlab-ci.yml
 
 build:
   stage: build
@@ -20,3 +30,139 @@ build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE .
     - docker push $IMAGE
+
+unit:
+  image: python:latest
+  stage: unit
+  script:
+    - apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+    - curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
+    - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+    - pip install --upgrade pip
+    - pip3 install -r requirements.txt
+    - python -m unittest tests/test_db.py
+
+gemnasium-python-dependency_scanning:
+  variables:
+    SECURE_LOG_LEVEL: "debug"
+    RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
+    CI_DEBUG_TRACE: “true”
+    DS_REMEDIATE: "true"
+    GIT_STRATEGY: fetch
+  before_script:
+    - apt update -y
+    - apt install curl -y
+    # - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+    - apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+    - curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
+    - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# image: docker:latest
+
+# services:
+#   - docker:dind
+
+# variables:
+#   DOCKER_DRIVER: overlay2
+#   DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
+
+# # adding the test and dast & fuzz stages allow for the OOTB (out of the box) security scans to run
+# stages:
+#   - build
+#   - unit
+#   - test
+#   - cleanup
+
+# include:
+#   # remote: 'https://gitlab.com/gitlab-org/gitlab/-/raw/v15.3.3-ee/lib/gitlab/ci/templates/Jobs/SAST.gitlab-ci.yml'  
+#   - template: Jobs/Build.gitlab-ci.yml
+#   - template: Jobs/Code-Quality.gitlab-ci.yml
+#   - template: Security/Container-Scanning.gitlab-ci.yml
+#   - template: Security/Dependency-Scanning.gitlab-ci.yml
+#   - template: Jobs/SAST.gitlab-ci.yml
+#     # version: v15.3.3-ee
+#   - template: License-Scanning.gitlab-ci.yml
+#   - template: Jobs/Secret-Detection.gitlab-ci.yml
+#   - template: Jobs/SAST-IaC.gitlab-ci.yml
+#   # - remote: 'https://gitlab.com/gitlab-org/gitlab/-/raw/v14.5.1-ee/lib/gitlab/ci/templates/Jobs/SAST.gitlab-ci.yml'
+  
+
+
+# semgrep-sast:
+#   variables:
+#     SAST_ANALYZER_IMAGE_TAG: "3.12.0"
+#     SEARCH_MAX_DEPTH: 50
+#     SECURE_LOG_LEVEL: "debug"
+#     SAST_EXCLUDED_PATHS: ""
+
+# bandit-sast:
+#   variables:
+#     SEARCH_MAX_DEPTH: 50
+#     SAST_EXCLUDED_PATHS: ""
+
+# sast:
+#   variables:
+#     SAST_DEFAULT_ANALYZERS: ""
+#     SEARCH_MAX_DEPTH: 50
+#     SAST_EXCLUDED_PATHS: ""
+
+# build:
+#   stage: build
+#   variables:
+#     IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+#   script:
+#     - docker info
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker build -t $IMAGE .
+#     - docker push $IMAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# unit:
+#   image: python:latest
+#   stage: unit
+#   script:
+#     - apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+#     - curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
+#     - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+#     - pip install --upgrade pip
+#     - pip3 install -r requirements.txt
+#     - python -m unittest tests/test_db.py
+
+# gemnasium-python-dependency_scanning:
+#   variables:
+#     SECURE_LOG_LEVEL: "debug"
+#     RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
+#     CI_DEBUG_TRACE: “true”
+#     DS_REMEDIATE: "true"
+#     GIT_STRATEGY: fetch
+#   before_script:
+#     - apt update -y
+#     - apt install gcc sqlite3 libsqlite3-dev musl-dev -y

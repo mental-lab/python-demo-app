@@ -1,0 +1,14 @@
+restrictednginx:
+    name: restricted-nginx-production
+    port: 80
+    targetPort: 80
+    replicas: 1
+notes:
+    name: notes-production
+    port: 5000
+    targetPort: 5000
+    path: notes
+    replicas: 1
+    dbBackend: mariadb
+    dbrootpwd: y33tboi
+    dbName: production

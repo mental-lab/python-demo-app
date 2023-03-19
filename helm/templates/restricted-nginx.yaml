@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.restrictednginx.name }}
+spec:
+  replicas: {{ .Values.restrictednginx.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.restrictednginx.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.restrictednginx.name }}
+    spec:
+      containers:
+      - name: {{ .Values.restrictednginx.name }}
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.restrictednginx.name }}
+spec:
+  ports:
+  - port: {{ .Values.restrictednginx.port }}
+    targetPort:  {{ .Values.restrictednginx.targetPort }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ .Values.restrictednginx.name }}

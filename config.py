@@ -2,4 +2,5 @@ import os
 
 
 class Config(object):
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    defaultKey = os.urandom(12).hex()
+    SECRET_KEY = os.environ.get('NOTES_SECRET_KEY') or defaultKey
