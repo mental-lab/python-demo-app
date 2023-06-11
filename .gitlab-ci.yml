@@ -3,6 +3,13 @@ image: docker:latest
 services:
   - docker:dind
 
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
+  ROLLOUT_RESOURCE_TYPE: deployment
+  RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
+
+
 stages:
   - build
   
