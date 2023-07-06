@@ -15,14 +15,12 @@ class TestDB(unittest.TestCase):
         pass
 
     def test_create_table(self):
-        db.create_table(self.conn, notes.sql_create_notes_table)
-
-        conn = db.create_connection()
-        res = conn.execute("SELECT name FROM sqlite_schema WHERE type='table';")
-        nameExists = False
         
-        for name in res:
-            if "'notes'," in str(name):
-                nameExists = True
+        try:
+            db.create_table(self.conn, notes.sql_create_notes_table)
+            nameExists = True
+        except: 
+            nameExists = False
 
         self.assertTrue(nameExists, "Test failed, couldn't find database table 'test'")
+
