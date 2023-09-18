@@ -9,10 +9,28 @@ variables:
   ROLLOUT_RESOURCE_TYPE: deployment
   RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
 
-
 stages:
   - build
-  
+  - unit
+  - test
+  - feature
+  - staging
+  - cleanup
+  - production
+
+include:
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.gitlab-ci.yml
+
+container_scanning:
+  variables:
+    GIT_STRATEGY: fetch
+    CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN: "false"
+
 build:
   stage: build
   variables:
@@ -22,3 +40,23 @@ build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE .
     - docker push $IMAGE
+
+unit:
+  image: python:3.11-buster
+  stage: unit
+  script:
+    - apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+    - curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
+    - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+    - pip install --upgrade pip
+    - pip3 install -r requirements.txt
+    - python -m unittest tests/test_db.py
+
+gemnasium-python-dependency_scanning:
+  before_script:
+    - apt update -y
+    - apt install curl -y
+    # - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
+    - apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+    - curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
+    - apt install gcc libmariadb3 libmariadb-dev mariadb-client sqlite3 libsqlite3-dev openssl -y
